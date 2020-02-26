@@ -1,0 +1,90 @@
+﻿
+<div class="form-group">
+    <label for="datatype">Type:</label>
+
+    <select id="datatype" class="form-control" onchange="changeFunc('Type');">
+        <option value="0">انتخاب محصول...</option>
+        @for (int i = 0; i < ViewBag.type.Count; i++)
+        {
+            <option value="@ViewBag.type[i].id_PT">@ViewBag.type[i].PTname</option>
+        }
+    </select>
+
+</div>
+
+<div class="form-group">
+    <label for="Main">Main Category:</label>
+
+    <select id="Main" class="form-control" disabled onchange="changeFunc('Main');">
+        <option value="0">انتخاب محصول...</option>
+        @for (int i = 0; i < ViewBag.main.Count; i++)
+        {
+            <option value="@ViewBag.main[i].id_MC">@ViewBag.main[i].MCName</option>
+        }
+    </select>
+
+</div>
+
+<div class="form-group">
+    <label for="Sub">Sub Category:</label>
+
+    <select id="Sub" class="form-control" disabled onchange="changeFunc('Sub');">
+        <option value="0">انتخاب محصول...</option>
+        <option value="5">Option #5</option>
+        <option value="6">Option #6</option>
+    </select>
+
+</div>
+
+
+<div class="form-group">
+
+    <label>Sub Category Option Key:</label>
+    <div class=" col-lg-6 col-md-8 col-xs-6 col-xl-6">
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>نام دسته بندی</th>
+                    <th>وضعیت</th>
+                    <th>اقدامات</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Jhon</td>
+                    <td>
+                        <span class="kt-badge kt-badge--inline kt-badge--success">فعال</span>
+                        <span class="kt-badge kt-badge--inline kt-badge--danger">حذف شده</span>
+                        <span class="kt-badge kt-badge--inline kt-badge--warning">غیر فعال</span>
+                    </td>
+                    <td>
+                        <button class="kt-badge kt-badge--inline kt-badge--info">اضافه کردن به لیست</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class=" col-lg-6 col-md-8 col-xs-6 col-xl-6">
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>نام دسته بندی</th>
+                    <th>اقدامات</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Jhon</td>
+                    <td>
+                        <button class="kt-badge kt-badge--inline kt-badge--danger">حذف کردن از لیست</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

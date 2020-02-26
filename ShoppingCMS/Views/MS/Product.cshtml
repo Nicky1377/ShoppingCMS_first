@@ -1,0 +1,368 @@
+﻿
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Master/Master.cshtml";
+}
+
+
+<!-- begin:: Subheader -->
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+
+                وارد کردن محصولات
+            </h3>
+
+            <span class="kt-subheader__separator kt-hidden"></span>
+            <div class="kt-subheader__breadcrumbs">
+                <a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                <span class="kt-subheader__breadcrumbs-separator"></span>
+                <a href="" class="kt-subheader__breadcrumbs-link">
+                    محصول
+                </a>
+                <span class="kt-subheader__breadcrumbs-separator"></span>
+                <a href="" class="kt-subheader__breadcrumbs-link">
+                    کالا
+                </a>
+                <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end:: Subheader -->
+<!-- begin:: Content -->
+
+
+
+
+<div class="kt-portlet ">
+    <div class="tab">
+        <button id="btn1" class="tablinks" onclick="openCity(event, 'London')"> تعریف کلی محصول</button>
+        <button id="btn2" class="tablinks" onclick="openCity(event, 'Paris')"> تعریف جز به جز</button>
+
+    </div>
+
+    <!-- Tab content -->
+    <div id="London" class="tabcontent">
+
+        <div class="form-group">
+            <label for="datatype">Type:</label>
+
+            <select id="datatype" class="form-control" onchange="changeFunc('Type');">
+                <option value="0">انتخاب محصول...</option>
+                <option value="1">Option #1</option>
+                <option value="2">Option #2</option>
+            </select>
+
+        </div>
+
+        <div class="form-group">
+            <label for="Main">Main Category:</label>
+
+            <select id="Main" class="form-control" disabled onchange="changeFunc('Main');">
+                <option value="0">انتخاب محصول...</option>
+                <option value="3">Option #3</option>
+                <option value="4">Option #4</option>
+            </select>
+
+        </div>
+
+        <div class="form-group">
+            <label for="Sub">Sub Category:</label>
+
+            <select id="Sub" class="form-control" disabled onchange="changeFunc('Sub');">
+                <option value="0">انتخاب محصول...</option>
+                <option value="5">Option #5</option>
+                <option value="6">Option #6</option>
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Sub Category Option Key:</label>
+            <div class=" col-lg-6 col-md-8 col-xs-6 col-xl-6">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>نام دسته بندی</th>
+                            <th>وضعیت</th>
+                            <th>اقدامات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="new_sub"></tr>
+                        <tr id="1">
+                            <th scope="row">1</th>
+                            <td>Jhon</td>
+                            <td>
+                                <span class="kt-badge kt-badge--inline kt-badge--success">فعال</span>
+                                <span class="kt-badge kt-badge--inline kt-badge--danger">حذف شده</span>
+                                <span class="kt-badge kt-badge--inline kt-badge--warning">غیر فعال</span>
+                            </td>
+                            <td>
+                                <button class="kt-badge kt-badge--inline kt-badge--info" onchange="return data_pro('new','1','name');">اضافه کردن به لیست</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class=" col-lg-6 col-md-8 col-xs-6 col-xl-6">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+
+                            <th>نام دسته بندی</th>
+                            <th>اقدامات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="1">
+
+                            <td>Jhon</td>
+                            <td>
+                                <button class="kt-badge kt-badge--inline kt-badge--danger" onchange="return data_pro('delete','1');">حذف کردن از لیست</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="form-group">
+            <label>Description : </label>
+            <input type="text" class="form-control" id="inputDescription" placeholder="Description" required>
+        </div>
+
+        <div class="form-group">
+            <label>Title : </label>
+            <input type="text" class="form-control" id="inputTitle" placeholder="Title" required>
+        </div>
+
+        <div class="form-group">
+            <label>Seo_Description : </label>
+            <input type="text" class="form-control" id="inputSeo_Description" placeholder="Seo_Description" required>
+        </div>
+
+        <div class="form-group">
+            <label>Seo_KeyWords : </label>
+            <input type="text" class="form-control" id="inputSeo_KeyWords" placeholder="Seo_KeyWords" required>
+        </div>
+
+        <div class="form-group">
+
+            <input type="checkbox" id="IS_AD" name="IS_AD" value="1">
+            <label for="IS_AD"> IS_AD</label><br>
+        </div>
+
+        <div class="form-group">
+            <label>Search_Gravity : </label>
+            <input type="text" class="form-control" id="inputSearch_Gravity" placeholder="Search_Gravity" required>
+        </div>
+
+        <hr />
+        <div class="form-group">
+            <label>Upload Pic : </label>
+
+        </div>
+
+        <hr />
+        <div class="form-group">
+            <label>Tbl Option : </label>
+            <div>
+                <label>value : </label>
+                <input type="text" class="form-control" id="inputvalue" placeholder="value" required>
+            </div>
+            <div>
+                <label>key : </label>
+                <input type="text" class="form-control" id="inputkey" placeholder="key" required>
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-lg-12 col-md-8 col-xs-6 col-xl-6">
+                <button type="submit" onclick="return post();" class="btn btn-primary w-100">ذخیره</button>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <div id="Paris" class="tabcontent">
+
+        <h3 class="kt-subheader__title">به زودیی</h3>
+    </div>
+
+
+</div>
+<script>
+
+    function changeFunc(id) {
+
+        if (id == 'Type') {
+
+
+            var PostJson = {
+                'value': document.getElementById("datatype").value,
+                'id': id
+            };
+            document.getElementById("Main").disabled = false;
+
+
+        } else if (id == 'Main') {
+
+
+            var PostJson = {
+                'value': document.getElementById("Main").value,
+                'id': id
+            };
+            document.getElementById("Sub").disabled = false;
+
+
+        } else if (id == 'Sub') {
+
+            var PostJson = {
+                'value': document.getElementById("Sub").value,
+                'id': id
+            };
+
+
+        }
+
+        var AddressToSend = "get_Product";
+
+        $.ajax({
+            url: AddressToSend,
+            type: "post",
+            data: JSON.stringify(PostJson),
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+
+              
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus);
+            }
+        });
+        return false;
+
+    }
+
+</script>
+<script>
+
+    function data_pro(value, id ,name) {
+        if (value == 'new') {
+
+           
+            $("#new_sub").append('<tr id="'+id+'"><td>'+name+'</td><td><button class="kt-badge kt-badge--inline kt-badge--danger" onchange="return data_pro("delete","'+id+'");">حذف کردن از لیست</button></td></tr>');
+
+            var JsonRequest =
+            {
+                'id' : id,
+                'value':  value
+            };
+
+        } else if (value == 'delete'){
+
+            var myobj = document.getElementById(id);
+            myobj.remove();
+
+            var JsonRequest =
+            {
+                'id' : id,
+                'value':  value
+            };
+        }
+
+        var AddressToSend = "????????";
+        $.ajax({
+            url: AddressToSend ,
+            type: "post",
+            data: JsonRequest,
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+              
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus);
+            }
+        });
+        return false;
+    }
+
+</script>
+
+<script>
+    function post() {
+
+        var PostJson = {
+
+            'key':  document.getElementById("inputkey").value,
+            'value':  document.getElementById("inputvalue").value,
+            'Search_Gravity':  document.getElementById("inputSearch_Gravity").value,
+            'IS_AD':  document.getElementById("IS_AD").value,
+            'Seo_KeyWords':  document.getElementById("inputSeo_KeyWords").value,
+            'Seo_Description':   document.getElementById("inputSeo_Description").value,
+            'Title':  document.getElementById("inputTitle").value,
+            'Description':  document.getElementById("inputDescription").value
+               
+            };
+
+
+     var AddressToSend = "???????";
+
+        $.ajax({
+            url: AddressToSend,
+            type: "post",
+            data: JSON.stringify(PostJson),
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+
+              
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus);
+            }
+        });
+        return false;
+    }
+</script>
+
+<script>
+
+    function openCity(evt, cityName) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+
+    }
+</script>
+<!-- end:: Content -->
