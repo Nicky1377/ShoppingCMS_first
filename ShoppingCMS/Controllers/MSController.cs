@@ -24,6 +24,12 @@ namespace ShoppingCMS.Controllers
             return View();
         }
         /////////////////////////////////////////////////////////// New_type : get
+
+        public ActionResult Add_Type()
+        {
+            return View();
+        }
+
         [HttpGet]
         public ActionResult New_type()
         {

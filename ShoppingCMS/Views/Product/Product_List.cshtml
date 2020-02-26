@@ -39,20 +39,20 @@
      
 <script>
     $(document).ready(function() {
-        $('#table').load("https://localhost:44395/Product/Product_table?SearchBox=false");
+        $('#table').load("https://localhost:44380/Product/Product_table?SearchBox=false");
     });
 
     
     function searchList() {
         //var m = $('#search_box').val();
         //alert(m);
-        //$('#table').load("https://localhost:44395/Product/Product_table?SearchBox=true&text="+m);
+        //$('#table').load("https://localhost:44380/Product/Product_table?SearchBox=true&text="+m);
     }
 
     function sClick() {
         var m = $('#search_box').val();
         //alert("hello");
-        $('#table').load("https://localhost:44395/Product/Product_table?SearchBox=true&text="+m);
+        $('#table').load("https://localhost:44380/Product/Product_table?SearchBox=true&text="+m);
     }
 
 </script>

@@ -266,7 +266,7 @@
                                             </a>
                                         </li>
                                         <li class="kt-menu__item " aria-haspopup="true">
-                                            <a href="#NEWSHOPS_Customers" class="kt-menu__link ">
+                                            <a href="#NEWSHOPS_Customers" onclick="All_Product_CL()" class="kt-menu__link ">
                                                 <i class="kt-menu__link-bullet flaticon2-pen">
                                                     <span></span>
                                                 </i>
@@ -284,16 +284,7 @@
 
                                             </a>
                                         </li>
-                                        <li class="kt-menu__item " aria-haspopup="true">
-                                            <a href="#NEWSHOPS_Customers" class="kt-menu__link ">
-                                                <i class="kt-menu__link-bullet flaticon2-copy">
-                                                    <span></span>
-                                                </i>
-                                                <span class="kt-menu__link-text">تعریف سردسته محصولات</span>
-
-                                            </a>
-                                        </li>
-                                        <li class="kt-menu__item " aria-haspopup="true">
+                                        <li style="display: none" class="kt-menu__item " aria-haspopup="true">
                                             <a href="#NEWSHOPS_Customers" class="kt-menu__link ">
                                                 <i class="kt-menu__link-bullet flaticon2-copy">
                                                     <span></span>
@@ -303,9 +294,7 @@
                                             </a>
                                         </li>
 
-
-
-                                        <li class="kt-menu__item " aria-haspopup="true">
+                                        <li style="display: none" class="kt-menu__item " aria-haspopup="true">
                                             <a href="#NEWSHOPS_Customers" class="kt-menu__link ">
                                                 <i class="kt-menu__link-bullet flaticon2-copy">
                                                     <span></span>
@@ -352,6 +341,31 @@
                                 <div class="kt-menu__submenu ">
                                     <span class="kt-menu__arrow"></span>
                                     <ul class="kt-menu__subnav">
+                                        <li class="kt-menu__item " aria-haspopup="true">
+                                            <a href="#NEWSHOPS_Type" onclick="Add_Type_CL()" class="kt-menu__link ">
+                                                <i class="kt-menu__link-bullet flaticon2-safe">
+                                                    <span></span>
+                                                </i>
+                                                <span class="kt-menu__link-text">تعریف سردسته محصولات</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="kt-menu__item " aria-haspopup="true">
+                                            <a href="#NEWSHOPS_MainCat" onclick="Add_MainCat_CL()" class="kt-menu__link ">
+                                                <i class="kt-menu__link-bullet flaticon2-safe">
+                                                    <span></span>
+                                                </i>
+                                                <span class="kt-menu__link-text">تعریف گروه اصلی محصولات</span>
+                                            </a>
+                                        </li>
+                                        <li class="kt-menu__item "  aria-haspopup="true">
+                                            <a href="#NEWSHOPS_SubCat" onclick="Add_SubCat_CL()" class="kt-menu__link ">
+                                                <i class="kt-menu__link-bullet flaticon2-safe">
+                                                    <span></span>
+                                                </i>
+                                                <span class="kt-menu__link-text">تعریف گروه محصولات</span>
+                                            </a>
+                                        </li>
                                         <li class="kt-menu__item " aria-haspopup="true">
                                             <a href="#NEWSHOPS_Customers" class="kt-menu__link ">
                                                 <i class="kt-menu__link-bullet flaticon2-safe">
@@ -665,7 +679,7 @@
                                         <i class="flaticon2-shelter"></i>
                                     </a>
                                     <span class="kt-subheader__breadcrumbs-separator"></span>
-                                    <a href="#" class="kt-subheader__breadcrumbs-link">دسته بندی اصلی محصولات</a>
+                                    <a href="#" id="PageName" class="kt-subheader__breadcrumbs-link"></a>
 
                                 </div>
                             </div>

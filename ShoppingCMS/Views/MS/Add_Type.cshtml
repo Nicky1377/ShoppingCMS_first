@@ -1,7 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "maincat";
-    
+    ViewBag.Title = "Add_Type";
 }
 
 <div ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -10,7 +9,7 @@
             <div class="alert alert-light alert-elevate fade show" role="alert">
                 <div class="alert-icon"><i class="flaticon-warning kt-font-brand"></i></div>
                 <div class="alert-text">
-                    توجه داشته باشید که پس از ویرایش گروه اصلی محصولات کلیه محصولات موجود در آن دسته بندی تقییر خواهند کرد
+                    توجه داشته باشید که پس از ویرایش دسته بندی اصلی محصولات کلیه محصولات موجود در آن دسته بندی تقییر خواهند کرد
                     <br />
                     <span>
                         بخش <span class="kt-badge kt-badge--inline kt-badge--warning">غیرفعال کردن</span> تمامی محصولات زیر شاخه آن دسته بندی را از دید کاربران مخفی میکند
@@ -25,12 +24,12 @@
         </div>
     </div>
     <!--START : TBLS-->
-    <div id="show_newCat">
+    <div id="show_newtype">
 
     </div>
     <!--END : TBLS-->
     <!--START : TBLS-->
-    <div id="show_tabCat">
+    <div id="show_tab">
 
     </div>
     <!--END : TBLS-->
@@ -148,7 +147,7 @@
 </div>
 <!--END : editMODAL-->
 
-
+@Scripts.Render("~/bundles/jquery")
 <script>
     function modalloader(name, id) {
 
@@ -167,8 +166,13 @@
     }
 </script>
 
-
 <script>
+
+    $(document).ready(function () {
+        $('#show_newtype').load("https://localhost:44380/MS/New_type");
+        $('#show_tab').load("https://localhost:44380/MS/table_Type");
+    });
+
 
     function savePics(action) {
         var myObject = {
@@ -181,7 +185,8 @@
         var x = myObject.fullName();
         var id = $(x).val();
 
-        var AddressToSend = "Cat_Switch";
+
+        var AddressToSend = "Type_Switch";
         var PostJson = {
             'action': action,
             'id': id
@@ -194,8 +199,8 @@
             success: function (response) {
                 $("#ERRAlertNew").hide(300);
                 $("#SuccesAlertNew").show(300);
-                $('#show_tabCat').load("https://localhost:44380/MS/table_Cat");
-                $('#show_newCat').load("https://localhost:44380/MS/New_Cat");
+                $('#show_tab').load("https://localhost:44380/MS/table_Type");
+                $('#show_newtype').load("https://localhost:44380/MS/New_type");
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 alert(textStatus);
@@ -204,3 +209,8 @@
         return false;
     }
 </script>
+
+
+
+
+

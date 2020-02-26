@@ -12,7 +12,8 @@ namespace ShoppingCMS
                 "~/assets/plugins/global/plugins.bundle.js",
                 "~/assets/js/scripts.bundle.js",
                 "~/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js",
-                "~/assets/js/pages/dashboard.js"
+                "~/assets/js/pages/dashboard.js",
+                "~/CustomScript/MasterClicks.js"
             ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
