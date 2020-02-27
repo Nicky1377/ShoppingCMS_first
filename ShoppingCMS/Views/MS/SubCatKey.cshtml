@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "SubCatKey";
-    Layout = "~/Views/Master/Master.cshtml";
+    
 }
 
 
@@ -167,9 +167,14 @@
 
     }
 </script>
-
+@Scripts.Render("~/bundles/jquery")
 
 <script>
+
+    $(document).ready(function () {
+         $('#show_newSCK').load("https://localhost:44380/ms/new_sck");
+            $('#show_tabSCK').load("https://localhost:44380/ms/table_sck");
+    });
 
     function savePics(action) {
         var myObject = {

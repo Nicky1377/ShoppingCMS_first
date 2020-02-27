@@ -179,6 +179,7 @@ namespace ShoppingCMS.Controllers
                 query = "UPDATE [dbo].[tbl_Product_Type] SET [ISDelete] = @value ,[DateDeleted] = GETDATE() WHERE id_PT = @id_PT";
 
                 str = db.Script(query, paramss);
+                db.Script("UPDATE [tbl_Product]SET[ISDELETE] = 1 WHERE [id_Type]="+id);
 
             }
             else if (action == "off")
@@ -190,9 +191,10 @@ namespace ShoppingCMS.Controllers
                 };
                 paramss.Add(parameters);
 
-                query = "UPDATE [dbo].[tbl_Product_Type] SET [ISDESABLED] = @value ,[DateDesabled] = GETDATE()  WHERE id_PT = @id_PT";
+                query = "UPDATE[tbl_Product_Type] SET [ISDESABLED] = @value ,[DateDesabled] = GETDATE()  WHERE id_PT = @id_PT";
 
                 str = db.Script(query, paramss);
+                db.Script("UPDATE [tbl_Product]SET[IS_AVAILABEL] = 0 WHERE [id_Type]=" + id);
             }
             else if (action == "on")
             {
@@ -203,9 +205,11 @@ namespace ShoppingCMS.Controllers
                 };
                 paramss.Add(parameters);
 
-                query = "UPDATE [dbo].[tbl_Product_Type] SET [ISDESABLED] = @value ,[DateDesabled] = GETDATE() WHERE id_PT = @id_PT";
+                query = "UPDATE[tbl_Product_Type] SET [ISDESABLED] = @value ,[DateDesabled] = GETDATE() WHERE id_PT = @id_PT";
 
                 str = db.Script(query, paramss);
+                db.Script("UPDATE [tbl_Product]SET[IS_AVAILABEL] = 1 WHERE [id_Type]=" + id);
+                
             }
             return RedirectToAction("table_Type");
         }
@@ -233,34 +237,17 @@ namespace ShoppingCMS.Controllers
             PDBC db = new PDBC("PandaMarketCMS", true);
             db.Connect();
 
-            using (DataTable dt = db.Select("SELECT [id_PT],[PTname],[ISDESABLED],[ISDelete] FROM [dbo].[tbl_Product_Type]"))
+            using (DataTable dt = db.Select("SELECT [id_PT],[PTname] FROM [tbl_Product_Type]WHERE ISDelete=0 AND ISDESABLED=0"))
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     data_type = new type();
 
 
-                    if (dt.Rows[i]["ISDelete"].ToString() == "1")
-                    {
-                        data_type.id_PT = dt.Rows[i]["id_PT"].ToString();
-                        data_type.PTname = dt.Rows[i]["PTname"].ToString() + "(حذف شده)";
-                        list_dat.Add(data_type);
-
-                    }
-                    else if (dt.Rows[i]["ISDESABLED"].ToString() == "1")
-                    {
-
-                        data_type.id_PT = dt.Rows[i]["id_PT"].ToString();
-                        data_type.PTname = dt.Rows[i]["PTname"].ToString() + "(غیر فعال)";
-                        list_dat.Add(data_type);
-                    }
-                    else
-                    {
+                    
                         data_type.id_PT = dt.Rows[i]["id_PT"].ToString();
                         data_type.PTname = dt.Rows[i]["PTname"].ToString();
                         list_dat.Add(data_type);
-                    }
-
 
                 }
                 ViewBag.Cat = list_dat;
@@ -296,7 +283,7 @@ namespace ShoppingCMS.Controllers
             if (action == "new")
             {
 
-                query_new = "INSERT INTO [dbo].[tbl_Product_MainCategory]([id_PT],[MCName],[ISDESABLED],[ISDelete])VALUES (@data_typa, @value,0,0)";
+                query_new = "INSERT INTO [tbl_Product_MainCategory]([id_PT],[MCName],[ISDESABLED],[ISDelete])VALUES (@data_typa, @value,0,0)";
 
                 parameters = new ExcParameters()
                 {
@@ -319,7 +306,7 @@ namespace ShoppingCMS.Controllers
             else if (action == "edit")
             {
 
-                query_edit = "UPDATE [dbo].[tbl_Product_MainCategory]SET [MCName] = @value WHERE id_MC = @id ";
+                query_edit = "UPDATE [tbl_Product_MainCategory]SET [MCName] = @value WHERE id_MC = @id ";
 
                 parameters = new ExcParameters()
                 {
@@ -351,7 +338,7 @@ namespace ShoppingCMS.Controllers
 
             PDBC db = new PDBC("PandaMarketCMS", true);
             db.Connect();
-            query_type = "SELECT [id_MC],[id_PT],[MCName],[ISDESABLED],[ISDelete],(select PTname from [dbo].[tbl_Product_Type]where [id_PT]=[tbl_Product_MainCategory].[id_PT] ) as 'name_PT',( select count (id_SC) from [dbo].[tbl_Product_SubCategoryOptionKey] where id_SC in( select id_SC from [dbo].[tbl_Product_SubCategory] where id_MC =[dbo].[tbl_Product_MainCategory].[id_MC] ))  as 'count' FROM [dbo].[tbl_Product_MainCategory]";
+            query_type = "SELECT [id_MC],[id_PT],[MCName],[ISDESABLED],[ISDelete],(select PTname from [tbl_Product_Type]where [id_PT]=[tbl_Product_MainCategory].[id_PT] ) as 'name_PT',( select count (id_SC) from [tbl_Product_SubCategoryOptionKey] where id_SC in( select id_SC from[tbl_Product_SubCategory] where id_MC =[tbl_Product_MainCategory].[id_MC] ))  as 'count' FROM [tbl_Product_MainCategory]";
             // query_type = "select [id_PT] ,[PTname],[ISDESABLED],[ISDelete],( select count (id_SC) from [dbo].[tbl_Product_SubCategoryOptionKey] where id_SC in ( select id_SC from [dbo].[tbl_Product_SubCategory] where id_MC in ( select id_MC from [dbo].[tbl_Product_MainCategory] where [id_PT]=[dbo].[tbl_Product_Type].[id_PT] )))  as 'count' from [dbo].[tbl_Product_Type]";
             using (DataTable dt = db.Select(query_type))
             {
@@ -396,7 +383,7 @@ namespace ShoppingCMS.Controllers
 
             if (action == "edit")
             {
-                using (DataTable dt = db.Select($"SELECT [id_MC],[MCName]FROM [dbo].[tbl_Product_MainCategory] where id_MC= '{id}'"))
+                using (DataTable dt = db.Select($"SELECT [id_MC],[MCName]FROM [tbl_Product_MainCategory] where id_MC= '{id}'"))
                 {
                     model = new TypeASPX()
                     {
@@ -419,9 +406,13 @@ namespace ShoppingCMS.Controllers
                 };
                 paramss.Add(parameters);
 
-                query = "UPDATE [dbo].[tbl_Product_MainCategory] SET [ISDelete] = @value , [DateDeleted] = GETDATE()  WHERE id_MC = @id_MC";
+                query = "UPDATE [tbl_Product_MainCategory] SET [ISDelete] = @value , [DateDeleted] = GETDATE()  WHERE id_MC = @id_MC";
 
                 str = db.Script(query, paramss);
+
+                db.Script("UPDATE [tbl_Product]SET[ISDELETE] = 1 WHERE [id_MainCategory]=" + id);
+                db.Script("UPDATE[tbl_Product_SubCategory] SET[ISDelete] = 1,[DateDeleted] = GETDATE() WHERE [id_MC]=" + id);
+                db.Script("UPDATE R SET R.ISDelete=1,R.DateDeleted= GETDATE() FROM[tbl_Product_SubCategoryOptionKey]AS R inner Join [tbl_Product_SubCategory] AS P On R.id_SC=P.id_SC where P.id_MC=" + id);
 
             }
             else if (action == "off")
@@ -436,6 +427,9 @@ namespace ShoppingCMS.Controllers
                 query = "UPDATE [dbo].[tbl_Product_MainCategory] SET [ISDESABLED] = @value , [DateDesabled] = GETDATE() WHERE id_MC= @id_MC";
 
                 str = db.Script(query, paramss);
+                db.Script("UPDATE [tbl_Product]SET[IS_AVAILABEL] = 0 WHERE [id_MainCategory]=" + id);
+                db.Script("UPDATE[tbl_Product_SubCategory] SET[ISDESABLED] = 1,[DateDesabled] = GETDATE() WHERE [id_MC]=" + id);
+                db.Script("UPDATE R SET R.ISDESABLED=1,R.DateDesabled= GETDATE() FROM[tbl_Product_SubCategoryOptionKey]AS R inner Join [tbl_Product_SubCategory] AS P On R.id_SC=P.id_SC where P.id_MC=" + id);
             }
             else if (action == "on")
             {
@@ -449,6 +443,9 @@ namespace ShoppingCMS.Controllers
                 query = "UPDATE [dbo].[tbl_Product_MainCategory] SET [ISDESABLED] = @value , [DateDesabled] = GETDATE() WHERE id_MC= @id_MC";
 
                 str = db.Script(query, paramss);
+                db.Script("UPDATE [tbl_Product]SET[IS_AVAILABEL] = 1 WHERE [id_MainCategory]=" + id);
+                db.Script("UPDATE[tbl_Product_SubCategory] SET[ISDESABLED] = 0 WHERE [id_MC]=" + id);
+                db.Script("UPDATE R SET R.DateDesabled=0 FROM[tbl_Product_SubCategoryOptionKey]AS R inner Join [tbl_Product_SubCategory] AS P On R.id_SC=P.id_SC where P.id_MC=" + id);
             }
             return RedirectToAction("table_Cat");
         }
@@ -475,33 +472,16 @@ namespace ShoppingCMS.Controllers
             PDBC db = new PDBC("PandaMarketCMS", true);
             db.Connect();
 
-            using (DataTable dt = db.Select("SELECT [id_MC],[id_PT],[MCName],[ISDESABLED],[ISDelete]FROM [dbo].[tbl_Product_MainCategory]"))
+            using (DataTable dt = db.Select("SELECT [id_MC],[MCName]FROM [tbl_Product_MainCategory] WHERE ISDESABLED=0 AND ISDelete=0"))
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     data_cat = new MainCategory();
 
 
-                    if (dt.Rows[i]["ISDelete"].ToString() == "1")
-                    {
-                        data_cat.id_MC = dt.Rows[i]["id_MC"].ToString();
-                        data_cat.MCName = dt.Rows[i]["MCName"].ToString() + " (حذف شده) ";
-                        list_cat.Add(data_cat);
-
-                    }
-                    else if (dt.Rows[i]["ISDESABLED"].ToString() == "1")
-                    {
-
-                        data_cat.id_MC = dt.Rows[i]["id_MC"].ToString();
-                        data_cat.MCName = dt.Rows[i]["MCName"].ToString() + " (غیر فعال) ";
-                        list_cat.Add(data_cat);
-                    }
-                    else
-                    {
                         data_cat.id_MC = dt.Rows[i]["id_MC"].ToString();
                         data_cat.MCName = dt.Rows[i]["MCName"].ToString();
                         list_cat.Add(data_cat);
-                    }
 
 
                 }
@@ -538,7 +518,7 @@ namespace ShoppingCMS.Controllers
             if (action == "new")
             {
 
-                query_new = "INSERT INTO [dbo].[tbl_Product_SubCategory]([id_MC],[SCName],[ISDESABLED],[ISDelete])VALUES (@data_Sub,@value,0,0)";
+                query_new = "INSERT INTO [tbl_Product_SubCategory]([id_MC],[SCName],[ISDESABLED],[ISDelete])VALUES (@data_Sub,@value,0,0)";
 
                 parameters = new ExcParameters()
                 {
@@ -561,7 +541,7 @@ namespace ShoppingCMS.Controllers
             else if (action == "edit")
             {
 
-                query_edit = "UPDATE [dbo].[tbl_Product_SubCategory]SET [SCName] = @value WHERE id_SC = @id ";
+                query_edit = "UPDATE [tbl_Product_SubCategory]SET [SCName] = @value WHERE id_SC = @id ";
 
                 parameters = new ExcParameters()
                 {
@@ -594,7 +574,7 @@ namespace ShoppingCMS.Controllers
             PDBC db = new PDBC("PandaMarketCMS", true);
             db.Connect();
             //query_type = "SELECT [id_MC],[id_PT],[MCName],[ISDESABLED],[ISDelete],(select PTname from [dbo].[tbl_Product_Type]where [id_PT]=[tbl_Product_MainCategory].[id_PT] ) as 'name_PT',( select count (id_SC) from [dbo].[tbl_Product_SubCategoryOptionKey] where id_SC in( select id_SC from [dbo].[tbl_Product_SubCategory] where id_MC =[dbo].[tbl_Product_MainCategory].[id_MC] ))  as 'count' FROM [dbo].[tbl_Product_MainCategory]";
-            query_type = "SELECT [id_SC],[id_MC],[SCName],[ISDESABLED],[ISDelete],(select MCName from [dbo].[tbl_Product_MainCategory] where [id_MC]=[tbl_Product_SubCategory].[id_MC] ) as 'nameMC',( select count (id_SC) from [dbo].[tbl_Product_SubCategoryOptionKey] where id_SC =[dbo].[tbl_Product_SubCategory].[id_SC]) as 'count' FROM [dbo].[tbl_Product_SubCategory]";
+            query_type = "SELECT [id_SC],[id_MC],[SCName],[ISDESABLED],[ISDelete],(select MCName from [tbl_Product_MainCategory] where [id_MC]=[tbl_Product_SubCategory].[id_MC] ) as 'nameMC',( select count (id_SC) from [tbl_Product_SubCategoryOptionKey] where id_SC =[tbl_Product_SubCategory].[id_SC]) as 'count' FROM [tbl_Product_SubCategory]";
             using (DataTable dt = db.Select(query_type))
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
@@ -638,7 +618,7 @@ namespace ShoppingCMS.Controllers
 
             if (action == "edit")
             {
-                using (DataTable dt = db.Select($"SELECT [id_SC],[SCName] FROM [dbo].[tbl_Product_SubCategory] where [id_SC]= '{id}'"))
+                using (DataTable dt = db.Select($"SELECT [id_SC],[SCName] FROM [tbl_Product_SubCategory] where [id_SC]= '{id}'"))
                 {
                     model = new TypeASPX()
                     {
@@ -661,9 +641,11 @@ namespace ShoppingCMS.Controllers
                 };
                 paramss.Add(parameters);
 
-                query = "UPDATE [dbo].[tbl_Product_SubCategory] SET [ISDelete] = @value , [DateDeleted] = GETDATE()  WHERE id_SC= @id_SC";
+                query = "UPDATE [tbl_Product_SubCategory] SET [ISDelete] = @value , [DateDeleted] = GETDATE()  WHERE id_SC= @id_SC";
 
                 str = db.Script(query, paramss);
+                db.Script("UPDATE [tbl_Product]SET[ISDELETE] = 1 WHERE [id_SubCategory]="+id);
+                db.Script("UPDATE[tbl_Product_SubCategoryOptionKey] SET [ISDelete] =1,[DateDeleted] = GETDATE() WHERE id_SC="+id);
 
             }
             else if (action == "off")
@@ -675,9 +657,11 @@ namespace ShoppingCMS.Controllers
                 };
                 paramss.Add(parameters);
 
-                query = "UPDATE [dbo].[tbl_Product_SubCategory] SET [ISDESABLED] = @value , [DateDesabled] = GETDATE() WHERE id_SC= @id_SC";
+                query = "UPDATE [tbl_Product_SubCategory] SET [ISDESABLED] = @value , [DateDesabled] = GETDATE() WHERE id_SC= @id_SC";
 
                 str = db.Script(query, paramss);
+                db.Script("UPDATE [tbl_Product]SET[IS_AVAILABEL] = 1 WHERE [id_SubCategory]=" + id);
+                db.Script("UPDATE[tbl_Product_SubCategoryOptionKey] SET [ISDESABLED] =1,[DateDesabled] = GETDATE() WHERE id_SC=" + id);
             }
             else if (action == "on")
             {
@@ -688,9 +672,11 @@ namespace ShoppingCMS.Controllers
                 };
                 paramss.Add(parameters);
 
-                query = "UPDATE [dbo].[tbl_Product_SubCategory] SET [ISDESABLED] = @value , [DateDesabled] = GETDATE() WHERE id_SC= @id_SC";
+                query = "UPDATE [tbl_Product_SubCategory] SET [ISDESABLED] = @value , [DateDesabled] = GETDATE() WHERE id_SC= @id_SC";
 
                 str = db.Script(query, paramss);
+                db.Script("UPDATE [tbl_Product]SET[IS_AVAILABEL] = 1 WHERE [id_SubCategory]=" + id);
+                db.Script("UPDATE[tbl_Product_SubCategoryOptionKey] SET [ISDESABLED] =0 WHERE id_SC=" + id);
             }
             return RedirectToAction("table_Sub");
         }
@@ -715,34 +701,15 @@ namespace ShoppingCMS.Controllers
             PDBC db = new PDBC("PandaMarketCMS", true);
             db.Connect();
 
-            using (DataTable dt = db.Select("SELECT [id_SC],[id_MC],[SCName],[ISDESABLED],[ISDelete],[DateDesabled],[DateDeleted]FROM [dbo].[tbl_Product_SubCategory]"))
+            using (DataTable dt = db.Select("SELECT [id_SC],[SCName]FROM[tbl_Product_SubCategory] WHERE ISDESABLED=0 AND ISDelete=0"))
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     data_Sub = new SubCategory();
 
-
-                    if (dt.Rows[i]["ISDelete"].ToString() == "1")
-                    {
-                        data_Sub.id_SC = dt.Rows[i]["id_SC"].ToString();
-                        data_Sub.SCName = dt.Rows[i]["SCName"].ToString() + " (حذف شده) ";
-                        list_Sub.Add(data_Sub);
-
-                    }
-                    else if (dt.Rows[i]["ISDESABLED"].ToString() == "1")
-                    {
-
-                        data_Sub.id_SC = dt.Rows[i]["id_SC"].ToString();
-                        data_Sub.SCName = dt.Rows[i]["SCName"].ToString() + " (غیر فعال) ";
-                        list_Sub.Add(data_Sub);
-                    }
-                    else
-                    {
                         data_Sub.id_SC = dt.Rows[i]["id_SC"].ToString();
                         data_Sub.SCName = dt.Rows[i]["SCName"].ToString();
                         list_Sub.Add(data_Sub);
-                    }
-
 
                 }
                 ViewBag.SCK = list_Sub;
@@ -778,7 +745,7 @@ namespace ShoppingCMS.Controllers
             if (action == "new")
             {
 
-                query_new = "INSERT INTO [dbo].[tbl_Product_SubCategoryOptionKey]([id_SC],[SCOKName],[ISDESABLED],[ISDelete])VALUES(@data_SCK,@value,0,0)";
+                query_new = "INSERT INTO [tbl_Product_SubCategoryOptionKey]([id_SC],[SCOKName],[ISDESABLED],[ISDelete])VALUES(@data_SCK,@value,0,0)";
 
                 parameters = new ExcParameters()
                 {
@@ -801,7 +768,7 @@ namespace ShoppingCMS.Controllers
             else if (action == "edit")
             {
 
-                query_edit = "UPDATE [dbo].[tbl_Product_SubCategoryOptionKey] SET [SCOKName] = @value WHERE id_SCOK =@id";
+                query_edit = "UPDATE [tbl_Product_SubCategoryOptionKey] SET [SCOKName] = @value WHERE id_SCOK =@id";
 
                 parameters = new ExcParameters()
                 {
@@ -833,7 +800,7 @@ namespace ShoppingCMS.Controllers
 
             PDBC db = new PDBC("PandaMarketCMS", true);
             db.Connect();
-            query_type = "SELECT [id_SCOK],[id_SC],[SCOKName],[ISDESABLED],[ISDelete],(SELECT [SCName]FROM [dbo].[tbl_Product_SubCategory]where [id_SC]=[tbl_Product_SubCategoryOptionKey].[id_SC])as 'name_SC' FROM [dbo].[tbl_Product_SubCategoryOptionKey]";
+            query_type = "SELECT [id_SCOK],[id_SC],[SCOKName],[ISDESABLED],[ISDelete],(SELECT [SCName]FROM [tbl_Product_SubCategory]where [id_SC]=[tbl_Product_SubCategoryOptionKey].[id_SC])as 'name_SC' FROM [tbl_Product_SubCategoryOptionKey]";
             // query_type = "SELECT [id_SC],[id_MC],[SCName],[ISDESABLED],[ISDelete],(select MCName from [dbo].[tbl_Product_MainCategory] where [id_MC]=[tbl_Product_SubCategory].[id_MC] ) as 'nameMC',( select count (id_SC) from [dbo].[tbl_Product_SubCategoryOptionKey] where id_SC =[dbo].[tbl_Product_SubCategory].[id_SC]) as 'count' FROM [dbo].[tbl_Product_SubCategory]";
             using (DataTable dt = db.Select(query_type))
             {
@@ -878,7 +845,7 @@ namespace ShoppingCMS.Controllers
 
             if (action == "edit")
             {
-                using (DataTable dt = db.Select($"SELECT [id_SCOK],[SCOKName] FROM [dbo].[tbl_Product_SubCategoryOptionKey] where [id_SCOK]= '{id}'"))
+                using (DataTable dt = db.Select($"SELECT [id_SCOK],[SCOKName] FROM [tbl_Product_SubCategoryOptionKey] where [id_SCOK]= '{id}'"))
                 {
                     model = new TypeASPX()
                     {
@@ -901,7 +868,7 @@ namespace ShoppingCMS.Controllers
                 };
                 paramss.Add(parameters);
 
-                query = "UPDATE [dbo].[tbl_Product_SubCategoryOptionKey] SET [ISDelete] = @value , [DateDeleted] = GETDATE()  WHERE id_SCOK= @id_SCOK";
+                query = "UPDATE [tbl_Product_SubCategoryOptionKey] SET [ISDelete] = @value , [DateDeleted] = GETDATE()  WHERE id_SCOK= @id_SCOK";
 
                 str = db.Script(query, paramss);
 
@@ -915,7 +882,7 @@ namespace ShoppingCMS.Controllers
                 };
                 paramss.Add(parameters);
 
-                query = "UPDATE [dbo].[tbl_Product_SubCategoryOptionKey] SET [ISDESABLED] = @value , [DateDesabled] = GETDATE() WHERE id_SCOK= @id_SCOK";
+                query = "UPDATE [tbl_Product_SubCategoryOptionKey] SET [ISDESABLED] = @value , [DateDesabled] = GETDATE() WHERE id_SCOK= @id_SCOK";
 
                 str = db.Script(query, paramss);
             }
@@ -928,7 +895,7 @@ namespace ShoppingCMS.Controllers
                 };
                 paramss.Add(parameters);
 
-                query = "UPDATE [dbo].[tbl_Product_SubCategoryOptionKey] SET [ISDESABLED] = @value , [DateDesabled] = GETDATE() WHERE id_SCOK= @id_SCOK";
+                query = "UPDATE [tbl_Product_SubCategoryOptionKey] SET [ISDESABLED] = @value , [DateDesabled] = GETDATE() WHERE id_SCOK= @id_SCOK";
 
                 str = db.Script(query, paramss);
             }

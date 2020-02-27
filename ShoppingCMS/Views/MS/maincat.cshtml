@@ -1,7 +1,6 @@
 ﻿
 @{
     ViewBag.Title = "maincat";
-    
 }
 
 <div ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -10,7 +9,7 @@
             <div class="alert alert-light alert-elevate fade show" role="alert">
                 <div class="alert-icon"><i class="flaticon-warning kt-font-brand"></i></div>
                 <div class="alert-text">
-                    توجه داشته باشید که پس از ویرایش گروه اصلی محصولات کلیه محصولات موجود در آن دسته بندی تقییر خواهند کرد
+                    توجه داشته باشید که پس از ویرایش گروه اصلی محصولات کلیه محصولات موجود در آن دسته بندی تغییر خواهند کرد
                     <br />
                     <span>
                         بخش <span class="kt-badge kt-badge--inline kt-badge--warning">غیرفعال کردن</span> تمامی محصولات زیر شاخه آن دسته بندی را از دید کاربران مخفی میکند
@@ -31,7 +30,7 @@
     <!--END : TBLS-->
     <!--START : TBLS-->
     <div id="show_tabCat">
-
+       
     </div>
     <!--END : TBLS-->
 </div>
@@ -167,8 +166,13 @@
     }
 </script>
 
-
+@Scripts.Render("~/bundles/jquery")
 <script>
+    $(document).ready(function () {
+          $('#show_newCat').load("https://localhost:44380/ms/new_cat");
+          $('#show_tabCat').load("https://localhost:44380/ms/table_cat");
+        alert("hello");
+    });
 
     function savePics(action) {
         var myObject = {
@@ -181,7 +185,7 @@
         var x = myObject.fullName();
         var id = $(x).val();
 
-        var AddressToSend = "Cat_Switch";
+        var AddressToSend = "MS/Cat_Switch";
         var PostJson = {
             'action': action,
             'id': id
@@ -192,6 +196,7 @@
             data: JSON.stringify(PostJson),
             contentType: "application/json; charset=utf-8",
             success: function (response) {
+               
                 $("#ERRAlertNew").hide(300);
                 $("#SuccesAlertNew").show(300);
                 $('#show_tabCat').load("https://localhost:44380/MS/table_Cat");

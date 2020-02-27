@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "SubCat";
-    Layout = "~/Views/Master/Master.cshtml";
+   
 }
 
 <div ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -167,8 +167,13 @@
     }
 </script>
 
-
+@Scripts.Render("~/bundles/jquery")
 <script>
+
+    $(document).ready(function () {
+        $('#show_newSub').load("https://localhost:44380/ms/new_sub");
+        $('#show_tabSub').load("https://localhost:44380/ms/table_sub");
+    });
 
     function savePics(action) {
         var myObject = {

@@ -11,10 +11,15 @@ function Add_Type_CL() {
 
 function Add_MainCat_CL() {
     $('#PageName').text("گروه اصلی محصولات");
-    $('#LoadAll').load("https://localhost:44380/MS/Add_Type");
+    $('#LoadAll').load("https://localhost:44380/MS/maincat");
 }
 
 function Add_SubCat_CL() {
     $('#PageName').text("گروه محصولات");
-    $('#LoadAll').load("https://localhost:44380/MS/Add_Type");
+    $('#LoadAll').load("https://localhost:44380/MS/SubCat");
+}
+
+function Add_SCK_CL() {
+    $('#PageName').text("ویژگی های محصولات");
+    $('#LoadAll').load("https://localhost:44380/MS/SubCatKey");
 }
